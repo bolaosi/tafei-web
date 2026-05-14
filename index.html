@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+<meta charset="UTF-8">
+
+<title>塔菲降临</title>
+
+<style>
+
+body{
+    margin:0;
+    background:black;
+    overflow:hidden;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    height:100vh;
+}
+
+h1{
+    color:red;
+    font-size:70px;
+
+    animation: flash 0.5s infinite;
+}
+
+@keyframes flash{
+    0%{opacity:1;}
+    50%{opacity:0;}
+    100%{opacity:1;}
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>
+谢谢
+肖瑶老师🫡🫡🫡
+</h1>
+
+<audio id="music" autoplay loop>
+    <source src="tafei.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+navigator.vibrate?.(1000);
+
+document.body.addEventListener('click', () => {
+    document.getElementById('music').play();
+});
+
+window.onload = () => {
+    const audio = document.getElementById('music');
+
+    audio.play().catch(()=>{
+        console.log("浏览器阻止自动播放");
+    });
+};
+
+</script>
+
+</body>
+</html>
