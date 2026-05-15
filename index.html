@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>感谢肖瑶老师</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    overflow:hidden;
+    height:100vh;
+    font-family:
+    "PingFang SC",
+    "Microsoft YaHei",
+    sans-serif;
+    color:white;
+    background:black;
+}
+
+/* 视频背景 */
+#bgVideo{
+
+    position:fixed;
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    filter:
+    brightness(0.4)
+    blur(2px);
+
+    transform:scale(1.05);
+
+    z-index:-3;
+}
+
+/* 黑色遮罩 */
+.overlay{
+
+    position:fixed;
+    inset:0;
+
+    background:
+    radial-gradient(
+    circle,
+    rgba(0,0,0,0.15),
+    rgba(0,0,0,0.72));
+
+    z-index:-2;
+}
+
+/* 扫描线 */
+.scanlines{
+
+    position:fixed;
+    inset:0;
+
+    background:
+    repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.03),
+    rgba(255,255,255,0.03) 1px,
+    transparent 1px,
+    transparent 4px
+    );
+
+    animation:scanMove 8s linear infinite;
+
+    pointer-events:none;
+
+    z-index:-1;
+}
+
+@keyframes scanMove{
+
+    from{
+        transform:translateY(0);
+    }
+
+    to{
+        transform:translateY(120px);
+    }
+}
+
+/* 中间卡片 */
+.card{
+
+    position:absolute;
+
+    top:50%;
+    left:50%;
+
+    transform:
+    translate(-50%,-50%);
+
+    width:85vw;
+    max-width:900px;
+
+    padding:45px;
+
+    text-align:center;
+
+    background:
+    rgba(255,255,255,0.08);
+
+    border:
+    1px solid rgba(0,255,255,0.25);
+
+    border-radius:28px;
+
+    backdrop-filter:blur(14px);
+
+    box-shadow:
+    0 0 30px rgba(0,255,255,.18),
+    0 0 80px rgba(111,0,255,.15);
+
+    animation:
+    floatCard 4s ease-in-out infinite;
+}
+
+@keyframes floatCard{
+
+    50%{
+        transform:
+        translate(-50%,-52%);
+    }
+}
+
+/* 标题 */
+.title{
+
+    font-size:18px;
+
+    letter-spacing:4px;
+
+    margin-bottom:25px;
+
+    color:#8edcff;
+}
+
+/* 主文字 */
+h1{
+
+    font-size:42px;
+
+    line-height:1.8;
+
+    white-space:pre-line;
+
+    text-shadow:
+    0 0 12px #00f6ff,
+    0 0 25px rgba(0,255,255,.5);
+}
+
+/* emoji */
+.emoji{
+
+    font-size:55px;
+
+    margin-top:25px;
+
+    animation:float 2s ease-in-out infinite;
+}
+
+@keyframes float{
+
+    50%{
+        transform:translateY(-10px);
+    }
+}
+
+/* 按钮 */
+button{
+
+    margin-top:28px;
+
+    border:none;
+
+    padding:12px 28px;
+
+    border-radius:40px;
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    background:
+    linear-gradient(
+    135deg,
+    #00f6ff,
+    #6a5cff);
+
+    box-shadow:
+    0 0 20px rgba(0,255,255,.35);
+
+    transition:.3s;
+}
+
+button:hover{
+
+    transform:scale(1.06);
+}
+
+/* 底部小字 */
+.tip{
+
+    margin-top:18px;
+
+    opacity:.6;
+
+    font-size:13px;
+
+    letter-spacing:2px;
+}
+
+/* 手机适配 */
+@media(max-width:768px){
+
+    h1{
+        font-size:28px;
+        line-height:1.7;
+    }
+
+    .card{
+        width:92vw;
+        padding:30px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- 视频背景 -->
+<video id="bgVideo" autoplay muted loop playsinline>
+
+    <source src="help.mp4" type="video/mp4">
+
+</video>
+
+<!-- 黑色遮罩 -->
+<div class="overlay"></div>
+
+<!-- 扫描线 -->
+<div class="scanlines"></div>
+
+<!-- 中央卡片 -->
+<div class="card">
+
+    <div class="title">
+        MCU CAR PROJECT
+    </div>
+
+    <h1 id="text"></h1>
+
+    <div class="emoji">🫡</div>
+
+    <button onclick="unlockMusic()">
+        点击播放音乐 🎶
+    </button>
+
+    <div class="tip">
+        感谢老师这段时间的指导与帮助
+    </div>
+
+    <!-- 音乐 -->
+    <audio id="music" loop>
+
+        <source src="tafei.mp3" type="audio/mpeg">
+
+    </audio>
+
+</div>
+
+<script>
+
+/* ===== 打字机文字 ===== */
+
+const text =
+`感谢肖瑶老师
+一路以来的指导与帮助
+单片机小车终于完成啦
+平时分加满谢谢 ！`;
+
+let i = 0;
+
+const target =
+document.getElementById("text");
+
+function type(){
+
+    if(i < text.length){
+
+        target.innerHTML +=
+        text[i] === '\n'
+        ? '<br>'
+        : text[i];
+
+        i++;
+
+        setTimeout(type,70);
+    }
+}
+
+type();
+
+/* ===== 音乐 ===== */
+
+const music =
+document.getElementById("music");
+
+function unlockMusic(){
+
+    music.volume = 0.6;
+
+    music.play();
+}
+
+/* 点击任意位置播放音乐 */
+document.body.addEventListener(
+'click',
+unlockMusic,
+{once:true}
+);
+
+</script>
+
+</body>
+</html>
