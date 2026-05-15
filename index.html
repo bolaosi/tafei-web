@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>感谢肖瑶老师</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    overflow:hidden;
+    height:100vh;
+
+    font-family:
+    "PingFang SC",
+    "Microsoft YaHei",
+    sans-serif;
+
+    color:white;
+
+    /* 更明亮科技背景 */
+    background:
+    linear-gradient(
+    135deg,
+    #0f172a,
+    #16213e,
+    #1b3a4b,
+    #0f3460);
+
+    position:relative;
+}
+
+/* 动态渐变背景 */
+body::before{
+
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background:
+    radial-gradient(
+    circle at top left,
+    rgba(0,255,255,0.18),
+    transparent 30%),
+
+    radial-gradient(
+    circle at bottom right,
+    rgba(111,0,255,0.18),
+    transparent 30%);
+
+    animation:bgMove 8s ease-in-out infinite alternate;
+
+    z-index:-5;
+}
+
+@keyframes bgMove{
+
+    from{
+        transform:translateY(0px);
+    }
+
+    to{
+        transform:translateY(-20px);
+    }
+}
+
+/* GIF区域 */
+.gif-box{
+
+    position:absolute;
+
+    top:50%;
+    left:50%;
+
+    transform:
+    translate(-50%,-50%);
+
+    width:92vw;
+    max-width:1200px;
+
+    height:78vh;
+
+    border-radius:30px;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 0 40px rgba(0,255,255,.25),
+    0 0 120px rgba(111,0,255,.15);
+
+    border:
+    2px solid rgba(255,255,255,.12);
+}
+
+/* GIF背景 */
+#bgGif{
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    filter:
+    brightness(0.65)
+    saturate(1.15);
+
+    animation:
+    gifZoom 12s ease-in-out infinite alternate;
+}
+
+/* GIF动态 */
+@keyframes gifZoom{
+
+    from{
+        transform:scale(1);
+    }
+
+    to{
+        transform:scale(1.06);
+    }
+}
+
+/* 遮罩 */
+.overlay{
+
+    position:absolute;
+    inset:0;
+
+    background:
+    linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.15),
+    rgba(0,0,0,0.45));
+
+    backdrop-filter:blur(1px);
+}
+
+/* 扫描线 */
+.scanlines{
+
+    position:absolute;
+    inset:0;
+
+    background:
+    repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.03),
+    rgba(255,255,255,0.03) 1px,
+    transparent 1px,
+    transparent 4px
+    );
+
+    animation:
+    scanMove 8s linear infinite;
+
+    pointer-events:none;
+}
+
+@keyframes scanMove{
+
+    from{
+        transform:translateY(0);
+    }
+
+    to{
+        transform:translateY(120px);
+    }
+}
+
+/* 中间玻璃卡片 */
+.card{
+
+    position:absolute;
+
+    top:50%;
+    left:50%;
+
+    transform:
+    translate(-50%,-50%);
+
+    width:82vw;
+    max-width:850px;
+
+    padding:45px;
+
+    text-align:center;
+
+    background:
+    rgba(255,255,255,0.12);
+
+    border:
+    1px solid rgba(255,255,255,0.18);
+
+    border-radius:28px;
+
+    backdrop-filter:blur(16px);
+
+    box-shadow:
+    0 0 30px rgba(0,255,255,.22);
+
+    animation:
+    floatCard 4s ease-in-out infinite;
+}
+
+@keyframes floatCard{
+
+    50%{
+        transform:
+        translate(-50%,-52%);
+    }
+}
+
+/* 标题 */
+.title{
+
+    font-size:18px;
+
+    letter-spacing:5px;
+
+    margin-bottom:24px;
+
+    color:#9cecff;
+
+    text-shadow:
+    0 0 10px rgba(0,255,255,.5);
+}
+
+/* 主文字 */
+h1{
+
+    font-size:42px;
+
+    line-height:1.8;
+
+    white-space:pre-line;
+
+    text-shadow:
+    0 0 12px #00f6ff,
+    0 0 25px rgba(0,255,255,.55);
+}
+
+/* emoji */
+.emoji{
+
+    font-size:55px;
+
+    margin-top:25px;
+
+    animation:float 2s ease-in-out infinite;
+}
+
+@keyframes float{
+
+    50%{
+        transform:translateY(-10px);
+    }
+}
+
+/* 按钮 */
+button{
+
+    margin-top:28px;
+
+    border:none;
+
+    padding:12px 30px;
+
+    border-radius:40px;
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    background:
+    linear-gradient(
+    135deg,
+    #00f6ff,
+    #6a5cff);
+
+    box-shadow:
+    0 0 20px rgba(0,255,255,.4);
+
+    transition:.3s;
+}
+
+button:hover{
+
+    transform:scale(1.08);
+}
+
+/* 底部小字 */
+.tip{
+
+    margin-top:18px;
+
+    opacity:.8;
+
+    font-size:13px;
+
+    letter-spacing:2px;
+}
+
+/* 手机适配 */
+@media(max-width:768px){
+
+    .gif-box{
+
+        width:96vw;
+        height:85vh;
+    }
+
+    h1{
+
+        font-size:28px;
+
+        line-height:1.7;
+    }
+
+    .card{
+
+        width:90vw;
+
+        padding:30px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- GIF区域 -->
+<div class="gif-box">
+
+    <!-- GIF背景 -->
+    <img id="bgGif" src="help.gif">
+
+    <!-- 遮罩 -->
+    <div class="overlay"></div>
+
+    <!-- 扫描线 -->
+    <div class="scanlines"></div>
+
+</div>
+
+<!-- 中间卡片 -->
+<div class="card">
+
+    <div class="title">
+        MCU CAR PROJECT
+    </div>
+
+    <h1 id="text"></h1>
+
+    <div class="emoji">🫡</div>
+
+    <button onclick="unlockMusic()">
+        点击播放音乐 🎶
+    </button>
+
+    <div class="tip">
+        感谢老师这段时间的指导与帮助
+    </div>
+
+    <!-- 音乐 -->
+    <audio id="music" loop>
+
+        <source src="tafei.mp3" type="audio/mpeg">
+
+    </audio>
+
+</div>
+
+<script>
+
+/* ===== 打字机文字 ===== */
+
+const text =
+`感谢肖瑶老师
+一路以来的指导与帮助
+单片机小车终于完成啦
+平时分加满谢谢 ！`;
+
+let i = 0;
+
+const target =
+document.getElementById("text");
+
+function type(){
+
+    if(i < text.length){
+
+        target.innerHTML +=
+        text[i] === '\n'
+        ? '<br>'
+        : text[i];
+
+        i++;
+
+        setTimeout(type,70);
+    }
+}
+
+type();
+
+/* ===== 音乐 ===== */
+
+const music =
+document.getElementById("music");
+
+function unlockMusic(){
+
+    music.volume = 0.6;
+
+    music.play();
+}
+
+/* 点击任意位置播放音乐 */
+document.body.addEventListener(
+'click',
+unlockMusic,
+{once:true}
+);
+
+</script>
+
+</body>
+</html>
