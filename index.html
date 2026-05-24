@@ -1,0 +1,540 @@
+<!-- ================= 背景图片墙 ================= -->
+
+<style>
+    /* 全局 */
+    * {
+
+        margin: 0;
+
+        padding: 0;
+
+        box-sizing: border-box;
+    }
+
+    /* 页面 */
+    body {
+
+        overflow: hidden;
+
+        width: 100%;
+
+        height: 100vh;
+
+        background:
+            linear-gradient(to bottom,
+                #f5f9ff,
+                #eaf2ff);
+
+        font-family:
+            "Microsoft YaHei";
+
+        position: relative;
+    }
+
+    /* ================= 图片墙 ================= */
+
+    /* 背景图片墙 */
+    .photo-wall {
+
+        position: fixed;
+
+        top: 0;
+        left: 0;
+
+        width: 100%;
+
+        height: 100%;
+
+        z-index: 0;
+
+        overflow: hidden;
+
+        pointer-events: none;
+    }
+
+    /* 背景图片 */
+    .photo {
+
+        position: absolute;
+
+        width: 22vw;
+
+        aspect-ratio: 4/3;
+
+        object-fit: cover;
+
+        background: #fff;
+
+        padding: 10px;
+
+        border-radius: 14px;
+
+        opacity: 0;
+
+        filter:
+            blur(10px) brightness(.92);
+
+        transform:
+            scale(.7) rotate(0deg);
+
+        transition:
+            all 1.2s ease;
+
+        box-shadow:
+            0 10px 30px rgba(0, 0, 0, .15);
+    }
+
+    /* 图片出现 */
+    .photo.show {
+
+        opacity: .32;
+
+        filter:
+            blur(4px) brightness(.95);
+
+        transform:
+            scale(1) rotate(calc(-12deg + 24deg * var(--r)));
+    }
+
+    /* ================= 中央感谢文字 ================= */
+
+    /* 中央容器 */
+    .center-text {
+
+        position: fixed;
+
+        top: 50%;
+
+        left: 50%;
+
+        transform:
+            translate(-50%, -50%);
+
+        z-index: 999;
+
+        display: flex;
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+
+        align-items: center;
+
+        width: 88%;
+
+        text-align: center;
+
+        pointer-events: none;
+    }
+
+    /* 单个文字 */
+    .center-text span {
+
+        font-weight: bold;
+
+        color: #4b8dff;
+
+        opacity: 0;
+
+        margin: 0 2px;
+
+        transform:
+            translateY(40px) scale(.8);
+
+        text-shadow:
+
+            0 0 10px rgba(80, 140, 255, .35),
+
+            0 0 28px rgba(80, 140, 255, .18);
+
+        animation:
+            textShow .8s forwards;
+
+        animation-fill-mode:
+            forwards;
+
+        transition:
+            all .4s ease;
+    }
+
+    /* 不同大小 */
+
+    .center-text span:nth-child(2n) {
+
+        font-size: 62px;
+    }
+
+    .center-text span:nth-child(3n) {
+
+        font-size: 78px;
+    }
+
+    .center-text span:nth-child(4n) {
+
+        font-size: 54px;
+    }
+
+    .center-text span:nth-child(5n) {
+
+        font-size: 88px;
+    }
+
+    .center-text span:nth-child(7n) {
+
+        font-size: 70px;
+    }
+
+    /* 文字出现动画 */
+    @keyframes textShow {
+
+        0% {
+
+            opacity: 0;
+
+            transform:
+                translateY(40px) scale(.7);
+        }
+
+        100% {
+
+            opacity: 1;
+
+            transform:
+                translateY(0) scale(1);
+        }
+    }
+
+    /* 呼吸发光 */
+    @keyframes glow {
+
+        0% {
+
+            text-shadow:
+
+                0 0 10px rgba(80, 140, 255, .35),
+
+                0 0 28px rgba(80, 140, 255, .18);
+        }
+
+        50% {
+
+            text-shadow:
+
+                0 0 20px rgba(80, 140, 255, .7),
+
+                0 0 48px rgba(80, 140, 255, .4);
+        }
+
+        100% {
+
+            text-shadow:
+
+                0 0 10px rgba(80, 140, 255, .35),
+
+                0 0 28px rgba(80, 140, 255, .18);
+        }
+    }
+
+    /* 已显示文字 */
+    .center-text span.show {
+
+        animation:
+            glow 2.5s infinite;
+    }
+
+    /* 手机适配 */
+    @media(max-width:768px) {
+
+        .center-text span:nth-child(2n) {
+
+            font-size: 36px;
+        }
+
+        .center-text span:nth-child(3n) {
+
+            font-size: 44px;
+        }
+
+        .center-text span:nth-child(4n) {
+
+            font-size: 30px;
+        }
+
+        .center-text span:nth-child(5n) {
+
+            font-size: 50px;
+        }
+
+        .center-text span:nth-child(7n) {
+
+            font-size: 40px;
+        }
+
+        .photo {
+
+            width: 38vw;
+        }
+    }
+</style>
+
+<!-- ================= 图片墙 ================= -->
+
+<div class="photo-wall" id="photoWall">
+</div>
+
+<!-- ================= 中央文字 ================= -->
+
+<div class="center-text" id="centerText">
+</div>
+
+<script>
+
+    /* ================= 图片墙 ================= */
+
+    /* 图片容器 */
+    const photoWall =
+        document.getElementById(
+            "photoWall"
+        );
+
+    /* 图片数量 */
+    const totalPhotos = 15;
+
+    /* 当前图片 */
+    let current = 1;
+
+    /* 获取位置 */
+    function getPosition(index) {
+
+        /* 自动列数 */
+        const cols =
+            Math.ceil(
+                window.innerWidth / 260
+            );
+
+        /* 横向间距 */
+        const spacingX =
+            window.innerWidth / cols;
+
+        /* 纵向间距 */
+        const spacingY = 230;
+
+        /* 行列 */
+        const row =
+            Math.floor(index / cols);
+
+        const col =
+            index % cols;
+
+        return {
+
+            x:
+                col * spacingX + 20,
+
+            y:
+                row * spacingY + 20
+        };
+    }
+
+    /* 添加图片 */
+    function addPhoto() {
+
+        /* 创建图片 */
+        const img =
+            document.createElement("img");
+
+        img.className = "photo";
+
+        /* 无限循环图片 */
+        let photoIndex =
+            ((current - 1)
+                % totalPhotos) + 1;
+
+        /* 图片路径 */
+        img.src =
+            `${photoIndex}.png`;
+
+        /* 获取位置 */
+        const pos =
+            getPosition(current - 1);
+
+        /* 设置位置 */
+        img.style.left =
+            pos.x + "px";
+
+        img.style.top =
+            pos.y + "px";
+
+        /* 随机旋转 */
+        img.style.setProperty(
+
+            "--r",
+
+            Math.random()
+        );
+
+        /* 添加 */
+        photoWall.appendChild(img);
+
+        /* 显示动画 */
+        setTimeout(() => {
+
+            img.classList.add(
+                "show"
+            );
+
+        }, 50);
+
+        current++;
+
+        /* 自动重新布局 */
+        const photos =
+            document.querySelectorAll(
+                ".photo"
+            );
+
+        photos.forEach((item, index) => {
+
+            const newPos =
+                getPosition(index);
+
+            item.style.left =
+                newPos.x + "px";
+
+            item.style.top =
+                newPos.y + "px";
+        });
+    }
+
+    /* 无限生成背景 */
+    setInterval(() => {
+
+        addPhoto();
+
+    }, 500);
+
+    /* ================= 中央视觉文字 ================= */
+
+    const message =
+        "感谢肖瑶老师一路以来的帮助和指导   那些被您照亮的时光 我会一直记得✨";
+
+    const centerText =
+        document.getElementById(
+            "centerText"
+        );
+
+    const chars =
+        message.split("");
+
+    /* 逐字出现 */
+    chars.forEach((char, index) => {
+
+        const span =
+            document.createElement(
+                "span"
+            );
+
+        span.innerHTML = char;
+
+        span.style.animationDelay =
+            `${index * 0.12}s`;
+
+        centerText.appendChild(
+            span
+        );
+
+        setTimeout(() => {
+
+            span.classList.add(
+                "show"
+            );
+
+            span.style.opacity = "1";
+
+        }, 1200 + index * 100);
+    });
+
+    /* ================= 自动播放音乐 ================= */
+
+    /* 创建音乐 */
+    const bgm =
+        new Audio("tafei.mp3");
+
+    /* 循环播放 */
+    bgm.loop = true;
+
+    /* 自动预加载 */
+    bgm.preload = "auto";
+
+    /* 音量 */
+    bgm.volume = 0.6;
+
+    /* 播放函数 */
+    function playMusic() {
+
+        bgm.play()
+            .then(() => {
+
+                console.log(
+                    "音乐已播放"
+                );
+
+            })
+            .catch(() => {
+
+                console.log(
+                    "等待用户点击"
+                );
+            });
+    }
+
+    /* 页面加载尝试自动播放 */
+    window.addEventListener(
+        "load",
+        playMusic
+    );
+
+    /* 微信浏览器兼容 */
+    document.addEventListener(
+        "WeixinJSBridgeReady",
+        playMusic,
+        false
+    );
+
+    /* 易信兼容 */
+    document.addEventListener(
+        "YixinJSBridgeReady",
+        playMusic,
+        false
+    );
+
+    /* 点击任意位置播放 */
+    document.addEventListener(
+        "click",
+        () => {
+
+            playMusic();
+
+        },
+        {
+            once: true
+        }
+    );
+
+    /* 安卓触摸兼容 */
+    document.addEventListener(
+        "touchstart",
+        () => {
+
+            playMusic();
+
+        },
+        {
+            once: true
+        }
+    );
+
+</script>
+
+<!-- ================= 背景图片墙结束 ================= -->
+```
